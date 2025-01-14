@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Product {
     @Id
@@ -27,4 +26,13 @@ public class Product {
     private Category category;
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true) // imaginile sunt legate de produs...cand stergem un produs stergem si imaginile si toate imaginile care n au corespondent(orphan) sunt sterse
     private List<Image> images; //mapped by se foloseste pentru a stabili relatia dintre product si imagine...se pune la entitatea OneToMany
+
+    public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
+        this.name = name;
+        this.brand = brand;
+        this.price = price;
+        this.inventory = inventory;
+        this.description = description;
+        this.category = category;
+    }
 }
