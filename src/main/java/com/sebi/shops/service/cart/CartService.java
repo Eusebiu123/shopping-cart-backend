@@ -4,6 +4,7 @@ import com.sebi.shops.exceptions.ResourceNotFoundException;
 import com.sebi.shops.model.Cart;
 import com.sebi.shops.repository.CartItemRepository;
 import com.sebi.shops.repository.CartRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class CartService implements ICartService {
         cart.setTotalAmount(totalAmount);
         return cartRepository.save(cart);
     }
-
+    @Transactional
     @Override
     public void clearCart(Long id) {
         Cart cart = getCart(id);
@@ -45,4 +46,9 @@ public class CartService implements ICartService {
         newCart.setId(newCartId);
         return cartRepository.save(newCart).getId();
     }
+    @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
+    }
 }
+
