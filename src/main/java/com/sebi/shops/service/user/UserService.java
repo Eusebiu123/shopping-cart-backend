@@ -1,5 +1,6 @@
 package com.sebi.shops.service.user;
 
+import com.sebi.shops.dto.UserDto;
 import com.sebi.shops.exceptions.AlreadyExistsException;
 import com.sebi.shops.exceptions.ResourceNotFoundException;
 import com.sebi.shops.model.User;
@@ -53,6 +54,10 @@ public class UserService implements IUserService{
         userRepository.findById(userId).ifPresentOrElse(userRepository :: delete, () ->{
             throw new ResourceNotFoundException("User not found!");
         });
+    }
+    @Override
+    public UserDto convertUserToDto(User user) {
+        return modelMapper.map(user, UserDto.class);
     }
 
 

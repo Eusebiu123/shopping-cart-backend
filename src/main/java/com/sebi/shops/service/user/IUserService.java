@@ -1,5 +1,6 @@
 package com.sebi.shops.service.user;
 
+import com.sebi.shops.dto.UserDto;
 import com.sebi.shops.model.User;
 import com.sebi.shops.request.CreateUserRequest;
 import com.sebi.shops.request.UserUpdateRequest;
@@ -10,4 +11,6 @@ public interface IUserService {
     User createUser(CreateUserRequest request);
     User updateUser(UserUpdateRequest request, Long userId);
     void deleteUser(Long userId);
+
+    UserDto convertUserToDto(User user);
 }
