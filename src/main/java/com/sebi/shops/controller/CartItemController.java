@@ -2,9 +2,11 @@ package com.sebi.shops.controller;
 
 import com.sebi.shops.exceptions.ResourceNotFoundException;
 import com.sebi.shops.model.Cart;
+import com.sebi.shops.model.User;
 import com.sebi.shops.response.ApiResponse;
 import com.sebi.shops.service.cart.ICartItemService;
 import com.sebi.shops.service.cart.ICartService;
+import com.sebi.shops.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,26 +22,19 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 public class CartItemController {
     private final ICartItemService cartItemService;
     private final ICartService cartService;
-
-
-
-
-
+    private final IUserService userService;
 
     @PostMapping("/item/add")
     public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long cartId,
             @RequestParam Long productId,
             @RequestParam Integer quantity) {
         try {
-            if(cartId ==null){
-               cartId= cartService.initializeNewCart();
-            }
-
-            cartItemService.addItemToCart(cartId, productId, quantity);
+            User user = userService.getUserById(1L);
+            Cart cart= cartService.initializeNewCart(user);
+            cartItemService.addItemToCart(cart.getId(), productId, quantity);
             return ResponseEntity.ok(new ApiResponse("Add Item Success", null));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
-
         }
     }
 
