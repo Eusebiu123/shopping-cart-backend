@@ -1,5 +1,6 @@
 package com.sebi.shops.service.product;
 
+import com.sebi.shops.dto.ProductDto;
 import com.sebi.shops.model.Product;
 import com.sebi.shops.request.AddProductRequest;
 import com.sebi.shops.request.UpdateProductRequest;
@@ -18,4 +19,8 @@ public interface IProductService {
     List<Product> getProductsByName(String name);
     List<Product> getProductByBrandAndName(String category, String name);
     Long countProductsByBrandAndName(String brand, String name);
+
+    List<ProductDto> getConvertedProducts(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 }

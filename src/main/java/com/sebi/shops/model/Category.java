@@ -1,5 +1,6 @@
 package com.sebi.shops.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class Category {
     public Category(String name) {
         this.name = name;
     }
-
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 }

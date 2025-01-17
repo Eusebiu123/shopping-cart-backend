@@ -1,14 +1,18 @@
 package com.sebi.shops.service.product;
 
-import com.sebi.shops.exceptions.ProductNotFoundException;
+import com.sebi.shops.dto.ImageDto;
+import com.sebi.shops.dto.ProductDto;
 import com.sebi.shops.exceptions.ResourceNotFoundException;
 import com.sebi.shops.model.Category;
+import com.sebi.shops.model.Image;
 import com.sebi.shops.model.Product;
 import com.sebi.shops.repository.CategoryRepository;
+import com.sebi.shops.repository.ImageRepository;
 import com.sebi.shops.repository.ProductRepository;
 import com.sebi.shops.request.AddProductRequest;
 import com.sebi.shops.request.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +23,9 @@ import java.util.Optional;
 public class ProductService  implements IProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
+    private final ImageRepository imageRepository;
+
     @Override
     public Product addProduct(AddProductRequest request) {
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
@@ -106,5 +113,19 @@ public class ProductService  implements IProductService{
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand,name);
+    }
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products){
+        return products.stream().map(this::convertToDto).toList();
+    }
+    @Override
+    public ProductDto convertToDto(Product product){
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image,ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }

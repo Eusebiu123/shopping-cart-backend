@@ -5,7 +5,6 @@ import com.sebi.shops.exceptions.ResourceNotFoundException;
 import com.sebi.shops.model.Image;
 import com.sebi.shops.model.Product;
 import com.sebi.shops.repository.ImageRepository;
-import com.sebi.shops.repository.ProductRepository;
 import com.sebi.shops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -60,8 +59,8 @@ public class ImageService implements IImageService{
                 imageRepository.save(savedImage);
 
                 ImageDto imageDto = new ImageDto();
-                imageDto.setImageId(savedImage.getId());
-                imageDto.setImageName(savedImage.getFileName());
+                imageDto.setId(savedImage.getId());
+                imageDto.setFileName(savedImage.getFileName());
                 imageDto.setDownloadUrl(savedImage.getDownloadUrl());
                 savedImageDto.add(imageDto);
 
